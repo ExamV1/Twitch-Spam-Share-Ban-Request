@@ -1,0 +1,49 @@
+import requests
+import json
+from tkinter import *
+from tkinter import filedialog
+
+TWITCH_API_BASE_URL = 'https://gql.twitch.tv/gql'
+
+root = Tk()
+root.withdraw()
+file_path = filedialog.askopenfilename(filetypes=[('Text Files', '*.txt')])
+
+tokens = []
+with open(file_path) as f:
+    tokens = f.read().splitlines()
+
+channel_id = input("Enter the ID of the channel you want to send the ban sharing request to: ")
+
+data = [
+    {
+        "operationName": "CreateBansSharingRequest",
+        "variables": {
+            "input": {
+                "channelID": channel_id
+            },
+            "channelID": ""
+        },
+        "extensions": {
+            "persistedQuery": {
+                "version": 1,
+                "sha256Hash": "95b1b0b3328ad0b8b1a5c48de545e6ec8e799dba0a35b1f5958e4edbfd2534ea"
+            }
+        }
+    }
+]
+
+for token in tokens:
+    headers = {
+        'Accept': '*/*',
+        'Authorization': f'OAuth {token}',
+        'Client-Id': 'kimne78kx3ncx6brgo4mv6wki5h1ko',
+        'Content-Type': 'text/plain;charset=UTF-8',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'
+    }
+    data[0]['variables']['channelID'] = channel_id
+    response = requests.post(TWITCH_API_BASE_URL, headers=headers, json=data)
+    if response.status_code == 200:
+        print(f'Successfully sent ban sharing request to channel {channel_id} with token {token}')
+    else:
+        print(f'Error sending ban sharing request to channel {channel_id} with token {token}: {response.text}')
