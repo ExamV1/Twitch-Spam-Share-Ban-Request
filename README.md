@@ -4,4 +4,6 @@ this cript does send the request a bit slow, feel free to try make it go faster,
 
 and ofcourse use your own twitch tokens for it to work
 
+Use this to get the twitch id of the user: https://www.streamweasels.com/tools/convert-twitch-username-to-user-id/
+
 ![image](https://user-images.githubusercontent.com/87576045/222991866-e450c1f9-58c9-430b-af61-6177087b640e.png)
